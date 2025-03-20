@@ -38,7 +38,7 @@ def tambahkan_tiket():
     while True:
         while True:
             tiket_tambahan = input('Masukkan Kategori Tiket yang ingin ditambahkan : ').strip().upper()  # User ingin menambah kategori tiket
-            if tiket_tambahan.isalpha():
+            if tiket_tambahan.isalnum():
                 break
             else:
                 print("Kategori hanya boleh berisi huruf. Silahkan coba lagi.")
@@ -66,41 +66,42 @@ def tambahkan_tiket():
         headers = ["No", "Kategori Tiket", "Stok", "Harga"]
 
         print("\nBerikut adalah preview tiket yang akan anda tambahkan: ")
-        print(tabulate(preview_tiket, headers=headers, tablefmt="double_grid", colalign=("left", "left", "left", "left")))
-
-        konfirmasi = input("\n Apakah Anda yakin ingin menambahkan tiket ini? (y/n): ").lower()
-        if konfirmasi == 'y':
-            data_tiket.append({
-                "nomor": len(data_tiket) + 1,  
-                "kategori": tiket_tambahan.upper(),
-                "stok": stok_tiket,
-                "harga": harga_tiket
-                })
-            tampilkan_tiket()
-            print('\n✅ Tiket berhasil ditambahkan!')
-
-            lanjut = input("\nIngin menambahkan tiket lagi? (y/n): ").lower()
-            if lanjut == 'y':
-                continue
-            elif lanjut == 'n':
-                pilihan = input("\nOk, apakah Anda ingin kembali ke menu utama? (y/n): ").lower()
-                if pilihan == 'n':
-                    print('Terima Kasih! Sampai Jumpa Kembali.')
-                    exit()
-                elif pilihan == 'y':
-                    break
-                else:
-                    print("\n⚠️ Pilihan tidak valid! Masukkan 'y' atau 'n'.") 
+        print(tabulate(preview_tiket, headers=headers, tablefmt="double_grid", colalign=("left", "left", "left", "left")))   
+        
+        while True:
+            konfirmasi = input("\n Apakah Anda yakin ingin menambahkan tiket ini? (y/n): ").lower()
+            if konfirmasi == 'y':
+                    data_tiket.append ({
+                        "nomor": len(data_tiket) +1,
+                        "kategori": tiket_tambahan.upper(),
+                        "stok": stok_tiket,
+                        "harga": harga_tiket})
+                    
+                    tampilkan_tiket()
+                    print('\n✅ Tiket berhasil ditambahkan!')
+                    
+            elif konfirmasi == 'n':
+                print (('\n     ❌ Penambahan tiket dibatalkan.'))
 
             else:
-                print("\n ⚠️ Pilihan tidak valid! Masukkan 'y' atau 'n'.") 
+                print("\n ⚠️ Pilihan tidak valid! Masukkan 'y' atau 'n'.")
+                continue
+            
+            lanjut = input("\nIngin menambahkan tiket lagi? (y/n): ").lower()
+            if lanjut == 'y':
+                break
+            elif lanjut == 'n':
+                    pilihan = input("\nOk, apakah Anda ingin kembali ke menu utama? (y/n): ").lower()
+            if pilihan == 'n':
+                print('Terima Kasih! Sampai Jumpa Kembali.')
+                exit()
+            
+            elif pilihan == 'y':
+                return
+            
+            else:
+                print("\n⚠️ Pilihan tidak valid! Masukkan 'y' atau 'n'.") 
 
-        elif konfirmasi == 'n':
-            print('\n     ❌ Penambahan tiket dibatalkan.')
-            break
-
-        else:
-            print("\n ⚠️ Pilihan tidak valid! Masukkan 'y' atau 'n'.")
 
 
 def menghapus_tiket():
@@ -122,7 +123,7 @@ def menghapus_tiket():
                 
                 elif checker_hapus == 'n': 
                     print('❌ Penghapusan dibatalkan.')
-                    return
+                    menu_utama()
 
                 else:
                     print('❌ Penghapusan dibatalkan. Data yang kamu input bukan huruf y/n!') 
@@ -183,7 +184,7 @@ def mengedit_tiket():
                             break
                         
                         elif checker_edit.lower() == 'n':
-                            return
+                            menu_utama()
 
                         else:
                             print("Masukkan huruf y/n!")
@@ -221,7 +222,7 @@ def membeli_tiket():
                         continue 
                         
                     shoppingcart.append({"kategori": data_tiket[indexTiket_membeli]["kategori"], "stok": banyakTiket, "harga": data_tiket[indexTiket_membeli]["harga"]})
-                    data_tiket[indexTiket_membeli]["stok"] -= banyakTiket #Coba kurangin stok kalau user udah input jumlah tiket 
+                    data_tiket[indexTiket_membeli]["stok"] -= banyakTiket #Berusaha untuk kurangin stok kalau user udah input jumlah tiket 
                     break
 
                 except ValueError:
